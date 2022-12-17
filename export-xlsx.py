@@ -571,9 +571,9 @@ def export_all_to_json(all_rows):
     """导出所有数据为 JSON 文件"""
     index = []
     for output in all_rows:
-        with open(output, "w", newline='\n') as f:
+        with open(output, "w", newline='\n', encoding="utf-8") as f:
             print(f"write file '{output}'")
-            f.write(json.dumps(all_rows[output], indent=4))
+            f.write(json.dumps(all_rows[output], indent=4, ensure_ascii=False))
         index.append(output)
     return index
 
@@ -619,9 +619,9 @@ def main():
             if len(filename) > 0:
                 output_index.append(filename)
 
-        with open(index_filename, "w", newline='\n') as f:
+        with open(index_filename, "w", newline='\n', encoding="utf-8") as f:
             print(f"write index file '{index_filename}'")
-            f.write(json.dumps(dict({"index": output_index}), indent=4))
+            f.write(json.dumps(dict({"index": output_index}), indent=4, ensure_ascii=False))
 
     print("done.")
 
