@@ -566,21 +566,26 @@ def load_all_rows_in_workbook(filename, verbose):
 
     return all_rows
 
+def dump_file_content(output, data):
+    if output.find(".json") != -1:
+        return json.dumps(data, indent=4, ensure_ascii=False)
+    elif output.find(".ts") != -1:
+        name = output.split('.')[0]
+        content = f"export var {name} = {json.dumps(data, indent=4, ensure_ascii=False)};"
+        return content
 
-def export_all_to_json(all_rows):
-    """导出所有数据为 JSON 文件"""
+def export_all_to_file(all_rows):
     index = []
     for output in all_rows:
         with open(output, "w", newline='\n', encoding="utf-8") as f:
             print(f"write file '{output}'")
-            f.write(json.dumps(all_rows[output], indent=4, ensure_ascii=False))
+            f.write(dump_file_content(output, all_rows[output]))
         index.append(output)
     return index
 
-
 def export_file(filename, verbose):
     all_rows = load_all_rows_in_workbook(filename, verbose)
-    return export_all_to_json(all_rows)
+    return export_all_to_file(all_rows)
 
 
 def export_files(names, verbose):
